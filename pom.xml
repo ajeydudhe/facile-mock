@@ -9,13 +9,45 @@
 
 	<modules>
 		<module>facile-mock-core</module>
+		<module>facile-mock-http-proxy</module>
 	</modules>
 
 	<properties>
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<browsermob-core.version>2.1.5</browsermob-core.version>
+		<httpclient.version>4.5.6</httpclient.version>
+		<commons-io.version>2.6</commons-io.version>
+
+		<org.slf4j-version>1.7.25</org.slf4j-version>
+		<log4j.version>2.11.1</log4j.version>
+
+		<junit.version>5.3.1</junit.version>
+		<assertj-core.version>3.11.1</assertj-core.version>
 	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

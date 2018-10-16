@@ -1,7 +1,7 @@
 /********************************************************************
- * File Name:    Scope.java
+ * File Name:    UnitTestScope.java
  *
- * Date Created: Oct 13, 2018
+ * Date Created: Oct 16, 2018
  *
  * ------------------------------------------------------------------
  * 
@@ -15,8 +15,7 @@ package org.expedientframework.facilemock.core;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public interface Scope
+public final class UnitTestScope implements TestScope
 {
-
 }
 

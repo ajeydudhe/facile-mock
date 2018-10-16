@@ -25,23 +25,16 @@ import org.expedientframework.facilemock.core.Occurs.OccuranceTracker;
  */
 public class MockDefinition<T, R>
 {
-  public MockDefinition(final Condition<T> condition, final Action<T, R> action, final OccuranceTracker occuranceTracker, final Scope...supportedScopes)
+  public MockDefinition(final Condition<T> condition, final TestScope...supportedScopes)
   {
     this.condition = condition;
-    this.action = action;
-    this.occuranceTracker = occuranceTracker;
     if(supportedScopes != null)
     {
-      for (Scope scope : supportedScopes)
+      for (TestScope scope : supportedScopes)
       {
         this.supportedScopes.add(scope);
       }
     }
-  }
-  
-  public MockDefinition()
-  {
-    this(null, null, null);
   }
   
   public void validate()
@@ -64,12 +57,19 @@ public class MockDefinition<T, R>
     this.action = action;
   }
   
+  public MockDefinition<T, R> then(final Action<T, R> action)
+  {
+    this.setAction(action);
+    
+    return this;
+  }
+  
   public void setOccurs(final OccuranceTracker occuranceTracker)
   {
     this.occuranceTracker = occuranceTracker;
   }
   
-  public void setSupportedScopes(final Scope...supportedScopes)
+  public void setSupportedScopes(final TestScope...supportedScopes)
   {
     this.supportedScopes = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(supportedScopes)));
   }
@@ -91,7 +91,7 @@ public class MockDefinition<T, R>
     return this.occuranceTracker;
   }
   
-  public Set<Scope> getSupportedScopes()
+  public Set<TestScope> getSupportedScopes()
   {
     return this.supportedScopes;
   }
@@ -99,7 +99,7 @@ public class MockDefinition<T, R>
   // Protected members
   protected Condition<T> condition;
   protected Action<T, R> action;
-  protected OccuranceTracker occuranceTracker;
-  protected Set<Scope> supportedScopes = new HashSet<>();
+  protected OccuranceTracker occuranceTracker = Occurs.ALWAYS.getOccuranceTracker();
+  protected Set<TestScope> supportedScopes = new HashSet<>();
 }
 

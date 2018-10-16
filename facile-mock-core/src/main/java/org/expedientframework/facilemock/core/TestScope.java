@@ -1,5 +1,5 @@
 /********************************************************************
- * File Name:    Action.java
+ * File Name:    TestScope.java
  *
  * Date Created: Oct 13, 2018
  *
@@ -15,9 +15,9 @@ package org.expedientframework.facilemock.core;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-@FunctionalInterface
-public interface Action<T, R>
+public interface TestScope
 {
-  public R execute(T input);
+  public final static UnitTestScope UNIT_TEST = new UnitTestScope();
+  public final static IntegrationTestScope INTEGRATION_TEST = new IntegrationTestScope();
 }
 

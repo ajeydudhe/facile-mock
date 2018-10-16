@@ -23,27 +23,33 @@ import org.expedientframework.facilemock.common.ArgumentValidator;
  */
 public abstract class AbstractExecutor<T, R> implements Executor<T, R>
 {
-  protected AbstractExecutor(final Scope executionScope)
+  protected AbstractExecutor(final TestScope executionScope)
   {
     this.executionScope = executionScope;
   }
   
+  @Override
   public void addMockDefinition(final MockDefinition<T, R> mockDefinition)
   {
     ArgumentValidator.notNull(mockDefinition, "mockDefinition");
-    
-    mockDefinition.validate();
     
     this.mockDefinitions.add(mockDefinition);
   }
   
   @Override
-  public R execute(final T input)
+  public void clear()
+  {
+    this.mockDefinitions.clear();
+  }
+  
+  protected R execute(final T input)
   {
     final Iterator<MockDefinition<T, R>> iterator = this.mockDefinitions.iterator();
     while(iterator.hasNext())
     {
       final MockDefinition<T, R> mockDefinition = iterator.next();
+      
+      mockDefinition.validate();
       
       // We might be adding the MockDefinitions irrespective of the scope and then remove them here otherwise 
       // while adding the MockDefinition we need to first take the scope as input which can make the flow unreadable.
@@ -58,7 +64,7 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
         continue;
       }
       
-      final R result = mockDefinition.getAction().excute(input);
+      final R result = mockDefinition.getAction().execute(input);
       
       if(!mockDefinition.getOccuranceTracker().tick())
       {
@@ -73,7 +79,7 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
   
   // Protected methods
   
-  protected final Scope executionScope;
+  protected final TestScope executionScope;
 
   protected final List<MockDefinition<T, R>> mockDefinitions = new ArrayList<>();
 }

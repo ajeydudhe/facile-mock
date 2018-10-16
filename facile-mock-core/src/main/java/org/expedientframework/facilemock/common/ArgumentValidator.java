@@ -35,6 +35,14 @@ public final class ArgumentValidator //TODO: Ajey - We should have a separate co
     }
   }
   
+  public static <T> void notEmpty(final String argument, final String argumentName)
+  {
+    if(argument == null || argument.trim().isEmpty())
+    {
+      throwNotEmptyException(argumentName);
+    }
+  }
+
   private static void throwNotNullException(final String argumentName)
   {
     throw new IllegalArgumentException(String.format("@%s cannot be null.", argumentName));
