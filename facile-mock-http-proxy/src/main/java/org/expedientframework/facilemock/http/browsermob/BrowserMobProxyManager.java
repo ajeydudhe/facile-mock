@@ -14,6 +14,7 @@ package org.expedientframework.facilemock.http.browsermob;
 import org.expedientframework.facilemock.core.AbstractExecutor;
 import org.expedientframework.facilemock.core.Condition;
 import org.expedientframework.facilemock.core.MockDefinition;
+import org.expedientframework.facilemock.core.MockDefinitionDelegate;
 import org.expedientframework.facilemock.core.TestScope;
 import org.expedientframework.facilemock.http.browsermob.actions.Response;
 import org.expedientframework.facilemock.http.browsermob.conditions.UrlEquals;
@@ -56,6 +57,11 @@ public class BrowserMobProxyManager extends AbstractExecutor<BrowserMobProxyMana
     return this.httpProxy.getPort();
   }
    
+  public void stop()
+  {
+    this.httpProxy.stop();
+  }
+  
   //TODO: Ajey - Move to another class
   public static UrlEquals urlEquals(final String urlToMatch)
   {
@@ -67,13 +73,13 @@ public class BrowserMobProxyManager extends AbstractExecutor<BrowserMobProxyMana
     return new Response(responseBody);
   }
   
-  public MockDefinition<BrowserMobProxyManager.RequestContext, HttpResponse> when(final Condition<BrowserMobProxyManager.RequestContext> condition)
+  public MockDefinitionDelegate<BrowserMobProxyManager.RequestContext, HttpResponse> when(final Condition<BrowserMobProxyManager.RequestContext> condition)
   {
     final MockDefinition<BrowserMobProxyManager.RequestContext, HttpResponse> mockDefinition = new MockDefinition<>(condition, null, null, this.executionScope);
     
     this.addMockDefinition(mockDefinition);
     
-    return mockDefinition;
+    return MockDefinitionDelegate.create(mockDefinition);
   }
   
   public static class RequestContext

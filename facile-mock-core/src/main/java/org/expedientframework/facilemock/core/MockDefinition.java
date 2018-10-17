@@ -45,6 +45,12 @@ public class MockDefinition<T, R>
     ArgumentValidator.notEmpty(this.supportedScopes, "supportedScopes");
   }
       
+  @Override
+  public String toString()
+  {
+    return String.format("Condition '%s' : Action '%s' : Occurance '%s' : Scopes %s", this.condition, this.action, this.occuranceTracker, this.supportedScopes);
+  }
+  
   // Setters
   
   public void setCondition(final Condition<T> condition)
@@ -55,13 +61,6 @@ public class MockDefinition<T, R>
   public void setAction(final Action<T, R> action)
   {
     this.action = action;
-  }
-  
-  public MockDefinition<T, R> then(final Action<T, R> action)
-  {
-    this.setAction(action);
-    
-    return this;
   }
   
   public void setOccurs(final OccuranceTracker occuranceTracker)

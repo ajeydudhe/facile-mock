@@ -27,6 +27,17 @@ public class Occurs
     return new OccuranceTracker();
   }
 
+  @Override
+  public String toString()
+  {
+    switch (this.count)
+    {
+      case 1: return "Once";
+      case -1: return "Always";
+      default: return this.count + " times.";
+    }
+  }
+  
   public static final Occurs ONCE = new Occurs(1);
   
   public static final Occurs ALWAYS = new Occurs(-1);
@@ -41,6 +52,12 @@ public class Occurs
       this.count = Occurs.this.count;
     }
     
+    @Override
+    public String toString()
+    {
+      return Occurs.this.toString();
+    }
+    
     /**
      * Called to indicate that we have executed the action. Used to keep track of occurrences.
      * 
@@ -48,7 +65,7 @@ public class Occurs
      */
     public boolean tick()
     {
-      return this.decrement() > 0;
+      return this.decrement() != 0;
     }
     
     protected int decrement()

@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.expedientframework.facilemock.common.ArgumentValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * TODO: Update with a detailed description of the interface/class.
@@ -55,6 +57,8 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
       // while adding the MockDefinition we need to first take the scope as input which can make the flow unreadable.
       if(!mockDefinition.getSupportedScopes().contains(this.executionScope)) //TODO: Ajey - Revisit !!! We cannot chain such calls. But are we using MockDefinition as a POJO ??? 
       {
+        LOGGER.info("Removing mock deinition [{}] as it does not apply to the execution scope [{}].", mockDefinition, this.executionScope);
+        
         iterator.remove();
         continue;
       }
@@ -68,6 +72,8 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
       
       if(!mockDefinition.getOccuranceTracker().tick())
       {
+        LOGGER.info("Removing mock definition [{}] as it is no longer required.", mockDefinition);
+        
         iterator.remove();
       }
       
@@ -82,5 +88,7 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
   protected final TestScope executionScope;
 
   protected final List<MockDefinition<T, R>> mockDefinitions = new ArrayList<>();
+  
+  private final static Logger LOGGER = LoggerFactory.getLogger(AbstractExecutor.class);
 }
 
