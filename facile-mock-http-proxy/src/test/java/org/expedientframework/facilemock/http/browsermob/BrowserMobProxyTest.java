@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -41,7 +40,7 @@ class BrowserMobProxyTest
     final BrowserMobProxyManager mock = new BrowserMobProxyManager(TestScope.UNIT_TEST);
     mock.start();
     
-    final String endpoint = "/endpoint";
+    final String endpoint = "/dummy";
     
     mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!"));
     
@@ -60,7 +59,7 @@ class BrowserMobProxyTest
     final BrowserMobProxyManager mock = new BrowserMobProxyManager(TestScope.UNIT_TEST);
     mock.start();
     
-    final String endpoint = "/endpoint";
+    final String endpoint = "/dummy";
     
     mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!")).perform(once());
     
@@ -77,7 +76,7 @@ class BrowserMobProxyTest
     final BrowserMobProxyManager mock = new BrowserMobProxyManager(TestScope.UNIT_TEST);
     mock.start();
     
-    final String endpoint = "/endpoint";
+    final String endpoint = "/dummy";
     
     mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!")).perform(times(3));
     
@@ -90,6 +89,27 @@ class BrowserMobProxyTest
     mock.stop();
   }
 
+  @Test
+  void mockMultipleResponses()
+  {
+    final BrowserMobProxyManager mock = new BrowserMobProxyManager(TestScope.UNIT_TEST);
+    mock.start();
+    
+    final String endpoint = "/dummy_01";
+    
+    mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock dummy 01 !!!")).perform(once());
+    mock.when(urlEquals("/dummy_02")).then(respondWith("Hello from mock dummy 02 !!!")).perform(once());
+    mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock dummy 03 !!!")).perform(once());
+    
+    assertThat(getResponseBody(mock.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock dummy 01 !!!");
+    assertThat(getResponseBody(mock.getPort(), "/dummy_02")).as("Response").isEqualTo("Hello from mock dummy 02 !!!");
+    assertThat(getResponseBody(mock.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock dummy 03 !!!");
+    
+    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+    
+    mock.stop();
+  }
+ 
   private String getResponseBody(final int port, final String endpoint)
   {
     try(CloseableHttpClient httpClient = getHttpClient(port))

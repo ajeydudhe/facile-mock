@@ -15,7 +15,7 @@ package org.expedientframework.facilemock.core;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class IntegrationTestScope implements TestScope
+public class IntegrationTestScope extends AbstractTestScope
 {
 }
 

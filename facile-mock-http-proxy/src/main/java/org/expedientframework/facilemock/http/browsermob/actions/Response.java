@@ -13,7 +13,7 @@ package org.expedientframework.facilemock.http.browsermob.actions;
 
 import java.io.UnsupportedEncodingException;
 
-import org.expedientframework.facilemock.core.Action;
+import org.expedientframework.facilemock.core.AbstractAction;
 import org.expedientframework.facilemock.http.browsermob.BrowserMobProxyManager;
 import org.expedientframework.facilemock.http.browsermob.BrowserMobProxyManager.RequestContext;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ import io.netty.handler.codec.http.HttpVersion;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class Response implements Action<BrowserMobProxyManager.RequestContext, HttpResponse>
+public class Response extends AbstractAction<BrowserMobProxyManager.RequestContext, HttpResponse>
 {
   public Response(final Object responseBody, final HttpResponseStatus statusCode)
   {

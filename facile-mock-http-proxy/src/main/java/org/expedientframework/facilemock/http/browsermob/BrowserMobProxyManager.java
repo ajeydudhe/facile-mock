@@ -75,7 +75,7 @@ public class BrowserMobProxyManager extends AbstractExecutor<BrowserMobProxyMana
   
   public MockDefinitionDelegate<BrowserMobProxyManager.RequestContext, HttpResponse> when(final Condition<BrowserMobProxyManager.RequestContext> condition)
   {
-    final MockDefinition<BrowserMobProxyManager.RequestContext, HttpResponse> mockDefinition = new MockDefinition<>(condition, null, null, this.executionScope);
+    final MockDefinition<BrowserMobProxyManager.RequestContext, HttpResponse> mockDefinition = new MockDefinition<>(condition, this.executionScope);
     
     this.addMockDefinition(mockDefinition);
     
