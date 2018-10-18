@@ -11,6 +11,9 @@
 
 package org.expedientframework.facilemock.http.browsermob.actions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.UnsupportedEncodingException;
 
 import org.expedientframework.facilemock.core.AbstractAction;
@@ -76,10 +79,10 @@ public class Response extends AbstractAction<BrowserMobProxyManager.RequestConte
         return null;
       }
       
-      final String response = this.responseBody.toString(); //(this.responseBody instanceof String ? this.responseBody.toString() : OBJECT_MAPPER.writeValueAsString(this.responseBody));
+      final String response = (this.responseBody instanceof String ? this.responseBody.toString() : OBJECT_MAPPER.writeValueAsString(this.responseBody));
       return Unpooled.wrappedBuffer(response.getBytes("UTF-8"));
     }
-    catch (UnsupportedEncodingException e)
+    catch (UnsupportedEncodingException | JsonProcessingException e)
     {
       throw new RuntimeException(e); //TODO: Ajey - Logging !!! Throw custom exception !!!
     }
@@ -88,7 +91,7 @@ public class Response extends AbstractAction<BrowserMobProxyManager.RequestConte
   // Private members
   private final Object responseBody;
   private final HttpResponseStatus statusCode;
-  //private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
   private final static Logger LOGGER = LoggerFactory.getLogger(Response.class);
 }
 

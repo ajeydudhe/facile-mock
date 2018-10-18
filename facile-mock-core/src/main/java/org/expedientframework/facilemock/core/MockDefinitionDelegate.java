@@ -41,6 +41,13 @@ public class MockDefinitionDelegate<T, R>
     return this;
   }
   
+  public MockDefinitionDelegate<T, R> scope(final TestScope scope)
+  {
+    this.mockDefinition.addScope(scope);
+    
+    return this;
+  }
+
   public static Occurs once()
   {
     return Occurs.ONCE;

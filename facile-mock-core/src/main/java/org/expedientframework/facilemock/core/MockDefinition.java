@@ -11,7 +11,6 @@
 
 package org.expedientframework.facilemock.core;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,9 +67,9 @@ public class MockDefinition<T, R>
     this.occuranceTracker = occuranceTracker;
   }
   
-  public void setSupportedScopes(final TestScope...supportedScopes)
+  public void addScope(final TestScope scope)
   {
-    this.supportedScopes = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(supportedScopes)));
+    this.supportedScopes.add(scope);
   }
   
   // Getters
@@ -92,7 +91,7 @@ public class MockDefinition<T, R>
   
   public Set<TestScope> getSupportedScopes()
   {
-    return this.supportedScopes;
+    return Collections.unmodifiableSet(this.supportedScopes);
   }
   
   // Protected members
