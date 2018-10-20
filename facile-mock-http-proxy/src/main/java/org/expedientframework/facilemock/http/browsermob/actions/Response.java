@@ -17,8 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.UnsupportedEncodingException;
 
 import org.expedientframework.facilemock.core.AbstractAction;
-import org.expedientframework.facilemock.http.browsermob.BrowserMobProxyManager;
-import org.expedientframework.facilemock.http.browsermob.BrowserMobProxyManager.RequestContext;
+import org.expedientframework.facilemock.http.browsermob.HttpRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +33,7 @@ import io.netty.handler.codec.http.HttpVersion;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class Response extends AbstractAction<BrowserMobProxyManager.RequestContext, HttpResponse>
+public class Response extends AbstractAction<HttpRequestContext, HttpResponse>
 {
   public Response(final Object responseBody, final HttpResponseStatus statusCode)
   {
@@ -48,7 +47,7 @@ public class Response extends AbstractAction<BrowserMobProxyManager.RequestConte
   }
   
   @Override
-  public HttpResponse execute(final RequestContext input)
+  public HttpResponse execute(final HttpRequestContext input)
   {
     if(this.responseBody == null)
     {

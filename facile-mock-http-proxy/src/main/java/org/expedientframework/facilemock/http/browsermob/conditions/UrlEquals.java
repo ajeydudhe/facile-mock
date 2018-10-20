@@ -16,8 +16,7 @@ import java.net.URL;
 
 import org.expedientframework.facilemock.common.ArgumentValidator;
 import org.expedientframework.facilemock.core.AbstractCondition;
-import org.expedientframework.facilemock.http.browsermob.BrowserMobProxyManager;
-import org.expedientframework.facilemock.http.browsermob.BrowserMobProxyManager.RequestContext;
+import org.expedientframework.facilemock.http.browsermob.HttpRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class UrlEquals extends AbstractCondition<BrowserMobProxyManager.RequestContext>
+public class UrlEquals extends AbstractCondition<HttpRequestContext>
 {
   public UrlEquals(final String urlToMatch)
   {
@@ -35,7 +34,7 @@ public class UrlEquals extends AbstractCondition<BrowserMobProxyManager.RequestC
   }
   
   @Override
-  public boolean evaluate(final RequestContext input)
+  public boolean evaluate(final HttpRequestContext input)
   {
     try
     {

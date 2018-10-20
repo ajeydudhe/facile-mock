@@ -19,18 +19,15 @@ import org.expedientframework.facilemock.core.TestScope;
 import org.expedientframework.facilemock.http.browsermob.actions.Response;
 import org.expedientframework.facilemock.http.browsermob.conditions.UrlEquals;
 
-import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.util.HttpMessageContents;
-import net.lightbody.bmp.util.HttpMessageInfo;
 
 /**
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class BrowserMobProxyManager extends AbstractExecutor<BrowserMobProxyManager.RequestContext, HttpResponse>
+public class BrowserMobProxyManager extends AbstractExecutor<HttpRequestContext, HttpResponse>
 {
   public BrowserMobProxyManager(final TestScope executionScope)
   {
@@ -38,7 +35,7 @@ public class BrowserMobProxyManager extends AbstractExecutor<BrowserMobProxyMana
     
     this.httpProxy.addRequestFilter((request, contents, messageInfo) -> {
       
-      return this.execute(new RequestContext(request, contents, messageInfo));
+      return this.execute(new HttpRequestContext(request, contents, messageInfo));
     });
   }
   
@@ -73,43 +70,13 @@ public class BrowserMobProxyManager extends AbstractExecutor<BrowserMobProxyMana
     return new Response(responseBody);
   }
   
-  public MockDefinitionDelegate<BrowserMobProxyManager.RequestContext, HttpResponse> when(final Condition<BrowserMobProxyManager.RequestContext> condition)
+  public MockDefinitionDelegate<HttpRequestContext, HttpResponse> when(final Condition<HttpRequestContext> condition)
   {
-    final MockDefinition<BrowserMobProxyManager.RequestContext, HttpResponse> mockDefinition = new MockDefinition<>(condition, TestScope.UNIT_TEST);
+    final MockDefinition<HttpRequestContext, HttpResponse> mockDefinition = new MockDefinition<>(condition, TestScope.UNIT_TEST);
     
     this.addMockDefinition(mockDefinition);
     
     return MockDefinitionDelegate.create(mockDefinition);
-  }
-  
-  public static class RequestContext
-  {
-    private RequestContext(final HttpRequest request, final HttpMessageContents contents, final HttpMessageInfo messageInfo)
-    {
-      this.request = request;
-      this.contents = contents;
-      this.messageInfo = messageInfo;
-    }
-    
-    public HttpRequest getRequest()
-    {
-      return this.request;
-    }
-    
-    public HttpMessageContents getContents()
-    {
-      return this.contents;
-    }
-    
-    public HttpMessageInfo getMessageInfo()
-    {
-      return this.messageInfo;
-    }
-
-    // Private members
-    private final HttpRequest request;
-    private final HttpMessageContents contents;
-    private final HttpMessageInfo messageInfo;
   }
   
   // Private members

@@ -43,7 +43,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.ssl.SslContext;
 
 /**
  * TODO: Update with a detailed description of the interface/class.
@@ -51,6 +50,28 @@ import io.netty.handler.ssl.SslContext;
  */
 class BrowserMobProxyTest
 {
+  @Test
+  void test()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    {
+      proxy.start();
+      
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "/dummy";
+        
+        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+      }
+    }
+  }
+  
   @Test
   void mockAlwaysByDefault_returnsMockData()
   {

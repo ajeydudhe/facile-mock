@@ -18,6 +18,7 @@ package org.expedientframework.facilemock.core;
 public interface Executor<T, R>
 {
   public void addMockDefinition(final MockDefinition<T, R> mockDefinition);
+  public R execute(final T input);
   public void clear();
 }
 

@@ -39,12 +39,7 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
   }
   
   @Override
-  public void clear()
-  {
-    this.mockDefinitions.clear();
-  }
-  
-  protected R execute(final T input)
+  public R execute(final T input)
   {
     final Iterator<MockDefinition<T, R>> iterator = this.mockDefinitions.iterator();
     while(iterator.hasNext())
@@ -81,6 +76,12 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
     }
     
     return null;
+  }
+  
+  @Override
+  public void clear()
+  {
+    this.mockDefinitions.clear();
   }
   
   // Protected methods
