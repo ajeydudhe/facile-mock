@@ -103,7 +103,7 @@ class BrowserMobProxyTest
     
     assertThat(getResponseBody(mock.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
     
-    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
     
     mock.stop();
   }
@@ -122,7 +122,7 @@ class BrowserMobProxyTest
     assertThat(getResponseBody(mock.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
     assertThat(getResponseBody(mock.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
     
-    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
     
     mock.stop();
   }
@@ -143,13 +143,13 @@ class BrowserMobProxyTest
     assertThat(getResponseBody(mock.getPort(), "/dummy_02")).as("Response").isEqualTo("Hello from mock dummy 02 !!!");
     assertThat(getResponseBody(mock.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock dummy 03 !!!");
     
-    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
     
     mock.stop();
   }
 
   @Test
-  void mockUsingIntegrationTestScope_returnsNotFound()
+  void mockUsingIntegrationTestScope_returnsBadGateway()
   {
     final BrowserMobProxyManager mock = new BrowserMobProxyManager(TestScope.INTEGRATION_TEST);
     mock.start();
@@ -158,7 +158,7 @@ class BrowserMobProxyTest
     
     mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock dummy 01 !!!")).perform(once());
 
-    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+    assertThat(getResponseStatus(mock.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
     
     mock.stop();
   }
