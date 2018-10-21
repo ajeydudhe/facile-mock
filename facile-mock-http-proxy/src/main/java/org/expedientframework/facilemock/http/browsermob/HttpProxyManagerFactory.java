@@ -11,7 +11,6 @@
 
 package org.expedientframework.facilemock.http.browsermob;
 
-import java.io.Closeable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -37,17 +36,34 @@ public abstract class HttpProxyManagerFactory
 {
   public static HttpProxyManager create(final TestScope executionScope)
   {
+    final BrowserMobProxy httpProxy = new BrowserMobProxyServer();
+    
+    httpProxy.start();
+    
+    return create(httpProxy, true, executionScope);
+  }
+  
+  public static HttpProxyManager create(final BrowserMobProxy httpProxy, final TestScope executionScope)
+  {
+    return create(httpProxy, false, executionScope);
+  }
+
+  private static HttpProxyManager create(final BrowserMobProxy httpProxy, final boolean ownsHttpProxy, final TestScope executionScope)
+  {
     return (HttpProxyManager) Proxy.newProxyInstance(HttpProxyManagerFactory.class.getClassLoader(), 
                                                      new Class<?>[] {HttpProxyManager.class}, 
-                                                     new ProxyInvocationHandler(executionScope));
+                                                     new ProxyInvocationHandler(httpProxy, ownsHttpProxy, executionScope));
   }
   
   private static class ProxyInvocationHandler implements InvocationHandler
   {
-    public ProxyInvocationHandler(final TestScope executionScope)
+    public ProxyInvocationHandler(final BrowserMobProxy httpProxy, final boolean ownsHttpProxy, final TestScope executionScope)
     {
       this.executionScope = executionScope;
-      this.httpProxy = new BrowserMobProxyServer();
+      
+      this.httpProxy = httpProxy;
+      this.ownsHttpProxy = ownsHttpProxy;
+      
       this.executor = new AbstractExecutor<HttpRequestContext, HttpResponse>(this.executionScope)
       {
       };
@@ -85,9 +101,15 @@ public abstract class HttpProxyManagerFactory
         case "when":
           return this.when((Condition<HttpRequestContext>) args[0]);
 
-        case "close":
-          this.httpProxy.stop();
+        case "close": 
+        {
+          LOGGER.info("Stopping the http proxy [{}]", this.ownsHttpProxy);
+          if(this.ownsHttpProxy)
+          {
+            this.httpProxy.stop();
+          }
           return null;
+        }
           
         case "mockContext":
           return new HttpMockContext((HttpProxyManager) proxy);
@@ -107,10 +129,11 @@ public abstract class HttpProxyManagerFactory
     
     // Private members
     private final BrowserMobProxy httpProxy;
+    private final boolean ownsHttpProxy;
     private final TestScope executionScope;
     private final Executor<HttpRequestContext, HttpResponse> executor;
     
-    private final static Logger LOGGER = LoggerFactory.getLogger(HttpProxyManagerFactory.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProxyInvocationHandler.class);
   }
 }
 

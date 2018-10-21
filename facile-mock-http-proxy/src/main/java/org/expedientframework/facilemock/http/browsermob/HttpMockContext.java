@@ -15,6 +15,8 @@ import java.io.Closeable;
 
 import org.expedientframework.facilemock.core.Condition;
 import org.expedientframework.facilemock.core.MockDefinitionDelegate;
+import org.expedientframework.facilemock.http.browsermob.actions.Response;
+import org.expedientframework.facilemock.http.browsermob.conditions.UrlEquals;
 
 import io.netty.handler.codec.http.HttpResponse;
 
@@ -38,6 +40,16 @@ public class HttpMockContext implements Closeable
   public void close()
   {
     this.httpProxyManager.clear();
+  }
+  
+  public static UrlEquals urlEquals(final String urlToMatch)
+  {
+    return new UrlEquals(urlToMatch);
+  }
+  
+  public static Response respondWith(final Object responseBody)
+  {
+    return new Response(responseBody);
   }
   
   // Private members
