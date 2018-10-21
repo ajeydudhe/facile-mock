@@ -33,7 +33,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mockAlwaysByDefault_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -53,13 +53,13 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mockOnce_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
         final String endpoint = "/dummy";
         
-        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!")).perform(once());
+        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!")).and.perform(once());
         
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         
@@ -71,13 +71,13 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mockThreeTimes_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
         final String endpoint = "/dummy";
         
-        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!")).perform(times(3));
+        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!")).and.perform(times(3));
         
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
@@ -91,7 +91,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mockMultipleResponses_returnsMockDataAndHttpStatusCode()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -113,7 +113,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mockUsingIntegrationTestScope_returnsBadGateway()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.INTEGRATION_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -129,7 +129,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mockUsingIntegrationTestScope_returnsRealData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.INTEGRATION_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -143,9 +143,9 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
  
   @Test
-  void mockUsingUnitTestScope_returnsMockData()
+  void mockUsingIntegrationTestScope_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -158,7 +158,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
         final List<Map<String, Object>> users = new ArrayList<>();
         users.add(user);
         
-        mock.when(urlEquals(endpoint)).then(respondWith(users)).perform(once()).scope(TestScope.INTEGRATION_TEST);
+        mock.when(urlEquals(endpoint)).then(respondWith(users)).and.perform(once()).and.alsoMockFor(integrationTest());
 
         final List<Map<String, Object>> returnedUsers = getUsers(proxy.getPort());
         assertThat(returnedUsers).as("Response").hasSize(1);

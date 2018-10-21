@@ -16,6 +16,8 @@ import static org.expedientframework.facilemock.http.browsermob.HttpMockContext.
 
 import org.expedientframework.facilemock.core.TestScope;
 import org.junit.jupiter.api.Test;
+
+import io.netty.handler.codec.http.HttpResponseStatus;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 
@@ -45,6 +47,49 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
     }
   }
   
+  @Test
+  void httpMockContext_callOutsideHttpContext_returnsBadGateway()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    {
+      final String endpoint = "/dummy";
+      
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+      }
+      assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
+    }
+  }
+
+  @Test
+  void httpMockContext_multipleHttpContexts_returnsMockData()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    {
+      final String endpoint = "/dummy";
+      
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+      }
+      
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        mock.when(urlEquals(endpoint)).then(respondWith("Bye from mock !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Bye from mock !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Bye from mock !!!");
+      }
+    }
+  }
+
   @Test
   void httpProxyManager_passingProxy()
   {

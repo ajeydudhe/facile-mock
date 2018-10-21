@@ -81,6 +81,8 @@ public abstract class AbstractExecutor<T, R> implements Executor<T, R>
   @Override
   public void clear()
   {
+    LOGGER.info("Removing all mock definitions.");
+    
     this.mockDefinitions.clear();
   }
   

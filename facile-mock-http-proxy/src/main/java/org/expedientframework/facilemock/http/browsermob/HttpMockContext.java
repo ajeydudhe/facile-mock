@@ -15,6 +15,7 @@ import java.io.Closeable;
 
 import org.expedientframework.facilemock.core.Condition;
 import org.expedientframework.facilemock.core.MockDefinitionDelegate;
+import org.expedientframework.facilemock.core.TestScope;
 import org.expedientframework.facilemock.http.browsermob.actions.Response;
 import org.expedientframework.facilemock.http.browsermob.conditions.UrlEquals;
 
@@ -52,6 +53,16 @@ public class HttpMockContext implements Closeable
     return new Response(responseBody);
   }
   
+  public static TestScope integrationTest()
+  {
+    return TestScope.INTEGRATION_TEST;
+  }
+
+  public static TestScope unitTest()
+  {
+    return TestScope.UNIT_TEST;
+  }
+
   // Private members
   private final HttpProxyManager httpProxyManager;
 }

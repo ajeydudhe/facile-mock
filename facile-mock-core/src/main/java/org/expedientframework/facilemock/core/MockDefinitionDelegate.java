@@ -41,7 +41,7 @@ public class MockDefinitionDelegate<T, R>
     return this;
   }
   
-  public MockDefinitionDelegate<T, R> scope(final TestScope scope)
+  public MockDefinitionDelegate<T, R> alsoMockFor(final TestScope scope)
   {
     this.mockDefinition.addScope(scope);
     
@@ -62,7 +62,9 @@ public class MockDefinitionDelegate<T, R>
   {
     return new Occurs(count);
   }
-  
+
+  public final MockDefinitionDelegate<T, R> and = this;
+ 
   // Private members
   private final MockDefinition<T, R> mockDefinition;
 }
