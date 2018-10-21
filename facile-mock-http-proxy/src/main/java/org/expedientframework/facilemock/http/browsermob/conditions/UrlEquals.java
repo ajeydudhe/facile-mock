@@ -11,51 +11,17 @@
 
 package org.expedientframework.facilemock.http.browsermob.conditions;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.expedientframework.facilemock.common.ArgumentValidator;
-import org.expedientframework.facilemock.core.AbstractCondition;
-import org.expedientframework.facilemock.http.browsermob.HttpRequestContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.regex.Pattern;
 
 /**
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class UrlEquals extends AbstractCondition<HttpRequestContext>
+public class UrlEquals extends AbstractUrlMatch
 {
   public UrlEquals(final String urlToMatch)
   {
-    ArgumentValidator.notEmpty(urlToMatch, "@urlToMatch");
-    
-    this.urlToMatch = urlToMatch;
+    super(Pattern.compile(urlToMatch)); //TODO: Ajey - There might be some chars to be escaped !!!
   }
-  
-  @Override
-  public boolean evaluate(final HttpRequestContext input)
-  {
-    try
-    {
-      final URL requestUrl = new URL(input.getMessageInfo().getOriginalUrl());
-      
-      final boolean match = this.urlToMatch.equalsIgnoreCase(requestUrl.getPath()); //TODO: Ajey - Should be case-sensitive???
-      
-      LOGGER.info("Incoming http request url [{}]. Matches ({})[{}]", requestUrl.getPath(), match, this.urlToMatch);
-      
-      return match;
-    }
-    catch (MalformedURLException e)
-    {
-      LOGGER.error("An error occurred while evaluating url match.", e);
-      throw new RuntimeException(e); //TODO: Ajey - Throw custom exception !!!
-    }
-  }
-  
-  // Private members
-  private final String urlToMatch;
-  
-  private final static Logger LOGGER = LoggerFactory.getLogger(UrlEquals.class);
 }
 

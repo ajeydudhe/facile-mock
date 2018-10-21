@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.expedientframework.facilemock.core.TestScope;
 import org.junit.jupiter.api.Test;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
