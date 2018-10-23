@@ -82,7 +82,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         
-        assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
+        assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
       }     
     }
   }
@@ -104,7 +104,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
         assertThat(getResponseBody(proxy.getPort(), "/dummy_02")).as("Response").isEqualTo("Hello from mock dummy 02 !!!");
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock dummy 03 !!!");
         
-        assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
+        assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
       }     
     }
   }
@@ -120,7 +120,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
         
         mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock dummy 01 !!!")).perform(once());
 
-        assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
+        assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
       }     
     }
   }

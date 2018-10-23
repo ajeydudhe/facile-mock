@@ -13,11 +13,8 @@ package org.expedientframework.facilemock.http.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Utf8;
-import com.google.common.net.HttpHeaders;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,7 +25,7 @@ import org.expedientframework.facilemock.core.AbstractAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.netty.handler.codec.http.HttpConstants;
+import io.netty.handler.codec.http.HttpHeaders;
 
 /**
  * TODO: Update with a detailed description of the interface/class.
@@ -46,8 +43,8 @@ public abstract class AbstractHttpResponseAction<T, R> extends AbstractAction<T,
       return;
     }
     
-    this.addHeader(HttpHeaders.CONTENT_LENGTH, this.responseBody.length);
-    this.addHeader(HttpHeaders.CONTENT_TYPE, (responseBody instanceof String ? "text/html" : "application/json")); // This is default. We can set the headers explicitly.
+    this.addHeader(HttpHeaders.Names.CONTENT_LENGTH, this.responseBody.length);
+    this.addHeader(HttpHeaders.Names.CONTENT_TYPE, (responseBody instanceof String ? "text/html" : HttpHeaders.Values.APPLICATION_JSON)); // This is default. We can set the headers explicitly.
   }
   
   public void addHeader(final String name, final Object value)

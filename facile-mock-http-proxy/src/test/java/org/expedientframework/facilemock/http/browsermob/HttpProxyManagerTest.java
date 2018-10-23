@@ -61,7 +61,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
       }
-      assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isEqualTo(HttpResponseStatus.BAD_GATEWAY.code());
+      assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
     }
   }
 
