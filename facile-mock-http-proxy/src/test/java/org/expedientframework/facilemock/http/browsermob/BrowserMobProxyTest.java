@@ -30,7 +30,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as per conventions and make more readable !!!
 {
   @Test
-  void mockAlwaysByDefault_returnsMockData()
+  void mock_alwaysByDefault_returnsMockData()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
@@ -50,7 +50,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
   
   @Test
-  void mockOnce_returnsMockData()
+  void mock_once_returnsMockDataOnceAndThenBadGatewayOrNotFoundError()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
@@ -68,7 +68,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
 
   @Test
-  void mockThreeTimes_returnsMockData()
+  void mock_threeTimes_returnsMockDataThriceAndThenBadGatewayOrNotFoundError()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
@@ -88,7 +88,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
 
   @Test
-  void mockMultipleResponses_returnsMockDataAndHttpStatusCode()
+  void mock_multipleResponses_returnsMockDataAndThenBadGatewayOrNotFoundError()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
@@ -110,7 +110,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
 
   @Test
-  void mockUsingIntegrationTestScope_returnsBadGateway()
+  void mock_usingIntegrationTestScope_returnsBadGatewayOrNotFoundError()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
     {
@@ -126,7 +126,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
 
   @Test
-  void mockUsingIntegrationTestScope_returnsRealData()
+  void mock_usingIntegrationTestScope_makesHttpCallAndReturnsRealData()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
     {
@@ -142,7 +142,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   }
  
   @Test
-  void mockUsingIntegrationTestScope_returnsMockData()
+  void mock_usingIntegrationTestScopeWithAlsoMockForIntegrationTestFlagSet_returnsMockData()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
     {

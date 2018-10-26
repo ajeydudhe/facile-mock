@@ -14,11 +14,9 @@ package org.expedientframework.facilemock.http.browsermob;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.expedientframework.facilemock.http.browsermob.HttpMockContext.*;
 
-import org.expedientframework.facilemock.core.TestScope;
 import org.junit.jupiter.api.Test;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 
 /**
@@ -28,9 +26,9 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as per conventions and make more readable !!!
 {
   @Test
-  void httpProxyManager_creatingProxy()
+  void httpProxyManager_creatingProxy_returnsMockResponse()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -48,9 +46,9 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   }
   
   @Test
-  void httpMockContext_callOutsideHttpContext_returnsBadGateway()
+  void httpMockContext_makeHttpCallOutsideHttpContext_returnsBadGatewayOrNotFound()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       final String endpoint = "/dummy";
       
@@ -61,6 +59,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
       }
+      
       assertThat(getResponseStatus(proxy.getPort(), endpoint)).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
     }
   }
@@ -68,7 +67,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   @Test
   void httpMockContext_multipleHttpContexts_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
     {
       final String endpoint = "/dummy";
       
@@ -91,11 +90,11 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   }
 
   @Test
-  void httpProxyManager_passingProxy()
+  void httpProxyManager_passingProxyManually_doesNotAutoCloseProxy()
   {
-    final BrowserMobProxy httpProxy = new BrowserMobProxyServer();
+    final BrowserMobProxyServer httpProxy = new BrowserMobProxyServer();
     httpProxy.start();
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(httpProxy, TestScope.UNIT_TEST))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(httpProxy, unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -109,11 +108,15 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
         assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
       }
+      
+      assertThat(httpProxy.isStopped()).as("Is proxy stopped?").isEqualTo(false);
     }
     finally
     {
       httpProxy.stop();
     }
+
+    assertThat(httpProxy.isStopped()).as("Is proxy stopped?").isEqualTo(true);
   }  
 }
 
