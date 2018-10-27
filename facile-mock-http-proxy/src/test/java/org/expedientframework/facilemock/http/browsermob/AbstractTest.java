@@ -31,6 +31,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.TrustStrategy;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +43,18 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractTest
 {
+  @BeforeEach
+  public void beforeTest(final TestInfo testInfo)
+  {
+    LOGGER.info(">>>>>>>>>>>>>>>>>>> Starting test [{}]", testInfo.getDisplayName());
+  }
+  
+  @AfterEach
+  public void afterTest(final TestInfo testInfo)
+  {
+    LOGGER.info("<<<<<<<<<<<<<<<<<<< Done test [{}]", testInfo.getDisplayName());
+  }
+
   protected String getResponseBody(final int port, final String endpoint)
   {
     try(CloseableHttpClient httpClient = getHttpClient(port))
