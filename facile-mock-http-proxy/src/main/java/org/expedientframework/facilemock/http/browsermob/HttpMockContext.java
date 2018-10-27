@@ -49,6 +49,16 @@ public class HttpMockContext implements Closeable
     return new UrlEquals(urlToMatch);
   }
   
+  public static UrlStartsWith urlStartsWith(final String urlToMatch)
+  {
+    return new UrlStartsWith(urlToMatch);
+  }
+
+  public static UrlEndsWith urlEndsWith(final String urlToMatch)
+  {
+    return new UrlEndsWith(urlToMatch);
+  }
+
   public static Response respondWith(final Object responseBody)
   {
     return new Response(responseBody);

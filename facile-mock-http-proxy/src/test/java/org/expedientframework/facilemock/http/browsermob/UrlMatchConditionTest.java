@@ -46,6 +46,23 @@ class UrlMatchConditionTest extends AbstractTest
   }
 
   @Test
+  void urlEquals_singleLevelPathButInputHasPathInBetween_returnsBadGatewayOrNotFound()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    {
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "/dummy";
+        
+        mock.when(urlEquals(endpoint)).then(respondWith("Hello from mock !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock !!!");
+        assertThat(getResponseStatus(proxy.getPort(), "/abc/dummy/xyz")).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
+      }     
+    }
+  }
+
+  @Test
   void urlEquals_twoLevelPaths_returnsMockData()
   {
     try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
@@ -98,5 +115,107 @@ class UrlMatchConditionTest extends AbstractTest
       }     
     }
   }
+  
+  @Test
+  void urlStartsWith_singleLevelPath_returnsMockData()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    {
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "/dummy";
+        
+        mock.when(urlStartsWith(endpoint)).then(respondWith("Hello from mock starts with !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy2")).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy23")).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy2/dummy3")).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseStatus(proxy.getPort(), "/abc/dummy2/dummy3")).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
+      }     
+    }
+  }  
+
+  @Test
+  void urlStartsWith_twoLevelPath_returnsMockData()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    {
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "/dummy1/dummy2";
+        
+        mock.when(urlStartsWith(endpoint)).then(respondWith("Hello from mock starts with !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy1/dummy2345")).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy1/dummy2/dummy3")).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock starts with !!!");
+        assertThat(getResponseStatus(proxy.getPort(), "/abc/dummy1/dummy2")).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
+      }     
+    }
+  }  
+
+  @Test
+  void urlEndsWith_singleLevelPath_returnsMockData()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    {
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "/dummy";
+        
+        mock.when(urlEndsWith(endpoint)).then(respondWith("Hello from mock ends with !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/abc/dummy")).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy/dummy")).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy1/dummy2/dummy")).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseStatus(proxy.getPort(), "/abc/dummy2/dummy/dummy2")).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
+      }     
+    }
+  }  
+
+  @Test
+  void urlEndsWith_simpleWord_returnsMockData()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    {
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "blah";
+        
+        mock.when(urlEndsWith(endpoint)).then(respondWith("Hello from mock ends with blah !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), "/abc/dummyblah")).as("Response").isEqualTo("Hello from mock ends with blah !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy/dummy/blah")).as("Response").isEqualTo("Hello from mock ends with blah !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy1/dummy2/dummyblah")).as("Response").isEqualTo("Hello from mock ends with blah !!!");
+        assertThat(getResponseStatus(proxy.getPort(), "/abc/dummy2/dummy/dummy2blah2")).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
+      }     
+    }
+  }  
+
+  @Test
+  void urlContains_singleLevelPath_returnsMockData()
+  {
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    {
+      try(HttpMockContext mock = proxy.mockContext())
+      {
+        final String endpoint = "/dummy";
+        
+        mock.when(urlEndsWith(endpoint)).then(respondWith("Hello from mock ends with !!!"));
+        
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/abc/dummy")).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy/dummy")).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), "/dummy/dummy2/dummy")).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseBody(proxy.getPort(), endpoint)).as("Response").isEqualTo("Hello from mock ends with !!!");
+        assertThat(getResponseStatus(proxy.getPort(), "/abc/dummy2/dummy/dummy2")).as("Response").isIn(HttpResponseStatus.BAD_GATEWAY.code(), HttpResponseStatus.NOT_FOUND.code());
+      }     
+    }
+  }  
 }
 

@@ -21,14 +21,14 @@ public class UrlMatches extends AbstractUrlMatch
 {
   public UrlMatches(final String urlToMatch)
   {
-    super(Pattern.compile(urlToMatch)); //TODO: Ajey - There might be some chars to be escaped !!!
+    super(Pattern.compile(urlToMatch)); // Consumer should escape any required character.
   }
 
   public static class UrlEquals extends UrlMatches
   {
     public UrlEquals(final String urlToMatch)
     {
-      super(urlToMatch); //TODO: Ajey - There might be some chars to be escaped !!!
+      super(urlToMatch); // Consumer should escape any required character.
     }
   }  
 
@@ -36,7 +36,7 @@ public class UrlMatches extends AbstractUrlMatch
   {
     public UrlStartsWith(final String urlToMatch)
     {
-      super(urlToMatch); //TODO: Ajey - There might be some chars to be escaped !!!
+      super("^" + urlToMatch + ".*"); // Consumer should escape any required character.
     }
   }  
 
@@ -44,7 +44,7 @@ public class UrlMatches extends AbstractUrlMatch
   {
     public UrlEndsWith(final String urlToMatch)
     {
-      super(urlToMatch); //TODO: Ajey - There might be some chars to be escaped !!!
+      super("^.*" + urlToMatch); // Consumer should escape any required character.
     }
   }
   
@@ -52,7 +52,7 @@ public class UrlMatches extends AbstractUrlMatch
   {
     public UrlContains(final String urlToMatch)
     {
-      super(urlToMatch); //TODO: Ajey - There might be some chars to be escaped !!!
+      super(urlToMatch); // Consumer should escape any required character.
     }
   }
 }
