@@ -17,7 +17,8 @@ import org.expedientframework.facilemock.core.Condition;
 import org.expedientframework.facilemock.core.MockDefinitionDelegate;
 import org.expedientframework.facilemock.core.TestScope;
 import org.expedientframework.facilemock.http.browsermob.actions.Response;
-import org.expedientframework.facilemock.http.browsermob.conditions.UrlEquals;
+
+import static org.expedientframework.facilemock.http.browsermob.conditions.UrlMatches.*;
 
 import io.netty.handler.codec.http.HttpResponse;
 
