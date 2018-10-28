@@ -46,20 +46,20 @@ public abstract class AbstractTest
   @BeforeEach
   public void beforeTest(final TestInfo testInfo)
   {
-    LOGGER.info("\n>>>>>>>>>>>>>>>>>>> Starting test [{}]", testInfo.getDisplayName());
+    LOGGER.info("\n########################################## Starting test [{}]", testInfo.getDisplayName());
   }
   
   @AfterEach
   public void afterTest(final TestInfo testInfo)
   {
-    LOGGER.info("\n<<<<<<<<<<<<<<<<<<< Done test [{}]", testInfo.getDisplayName());
+    LOGGER.info("\n########################################## Done test [{}]", testInfo.getDisplayName());
   }
 
   protected String getResponseBody(final int port, final String endpoint)
   {
     try(CloseableHttpClient httpClient = getHttpClient(port))
     {
-      try(CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet("http://sample.host.does.not.exists.com" + endpoint)))
+      try(CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet("http://sampleHostDoesNotExistsBlahDlahClahBlah.com" + endpoint)))
       {
         return IOUtils.toString(httpResponse.getEntity().getContent(), "UTF-8");
       }
@@ -95,7 +95,7 @@ public abstract class AbstractTest
   {
     try(CloseableHttpClient httpClient = getHttpClient(port))
     {
-      try(CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet("http://sample.host.does.not.exists.com" + endpoint)))
+      try(CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet("http://sampleHostDoesNotExistsBlahDlahClahBlah.com" + endpoint)))
       {
         return httpResponse.getStatusLine().getStatusCode();
       }
