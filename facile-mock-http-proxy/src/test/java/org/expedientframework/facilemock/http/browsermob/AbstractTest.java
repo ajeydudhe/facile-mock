@@ -46,13 +46,13 @@ public abstract class AbstractTest
   @BeforeEach
   public void beforeTest(final TestInfo testInfo)
   {
-    LOGGER.info(">>>>>>>>>>>>>>>>>>> Starting test [{}]", testInfo.getDisplayName());
+    LOGGER.info("\n>>>>>>>>>>>>>>>>>>> Starting test [{}]", testInfo.getDisplayName());
   }
   
   @AfterEach
   public void afterTest(final TestInfo testInfo)
   {
-    LOGGER.info("<<<<<<<<<<<<<<<<<<< Done test [{}]", testInfo.getDisplayName());
+    LOGGER.info("\n<<<<<<<<<<<<<<<<<<< Done test [{}]", testInfo.getDisplayName());
   }
 
   protected String getResponseBody(final int port, final String endpoint)
