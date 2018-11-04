@@ -13,7 +13,7 @@ package org.expedientframework.facilemock.http.browsermob;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.expedientframework.facilemock.core.MockDefinitionDelegate.*;
-import static org.expedientframework.facilemock.http.browsermob.HttpMockContext.*;
+import static org.expedientframework.facilemock.http.browsermob.HttpMockHelpers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_alwaysByDefault_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -52,7 +52,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_once_returnsMockDataOnceAndThenBadGatewayOrNotFoundError()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -70,7 +70,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_threeTimes_returnsMockDataThriceAndThenBadGatewayOrNotFoundError()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -90,7 +90,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_multipleResponses_returnsMockDataAndThenBadGatewayOrNotFoundError()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -112,7 +112,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_usingIntegrationTestScope_returnsBadGatewayOrNotFoundError()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(integrationTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -128,7 +128,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_usingIntegrationTestScope_makesHttpCallAndReturnsRealData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(integrationTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -144,7 +144,7 @@ class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as 
   @Test
   void mock_usingIntegrationTestScopeWithAlsoMockForIntegrationTestFlagSet_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(integrationTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(integrationTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {

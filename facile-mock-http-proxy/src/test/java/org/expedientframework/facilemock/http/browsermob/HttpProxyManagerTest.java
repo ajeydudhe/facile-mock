@@ -12,7 +12,7 @@
 package org.expedientframework.facilemock.http.browsermob;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.expedientframework.facilemock.http.browsermob.HttpMockContext.*;
+import static org.expedientframework.facilemock.http.browsermob.HttpMockHelpers.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   @Test
   void httpProxyManager_creatingProxy_returnsMockResponse()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -48,7 +48,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   @Test
   void httpMockContext_makeHttpCallOutsideHttpContext_returnsBadGatewayOrNotFound()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       final String endpoint = "/dummy";
       
@@ -67,7 +67,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   @Test
   void httpMockContext_multipleHttpContexts_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       final String endpoint = "/dummy";
       
@@ -94,7 +94,7 @@ class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as
   {
     final BrowserMobProxyServer httpProxy = new BrowserMobProxyServer();
     httpProxy.start();
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(httpProxy, unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(httpProxy, unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {

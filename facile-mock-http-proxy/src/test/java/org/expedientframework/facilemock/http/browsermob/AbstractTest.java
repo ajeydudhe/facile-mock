@@ -27,6 +27,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -62,6 +64,40 @@ public abstract class AbstractTest
       try(CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet("http://sampleHostDoesNotExistsBlahDlahClahBlah.com" + endpoint)))
       {
         return IOUtils.toString(httpResponse.getEntity().getContent(), "UTF-8");
+      }
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
+  protected String postAndGetResponseBody(final int port, final String endpoint)
+  {
+    try(CloseableHttpClient httpClient = getHttpClient(port))
+    {
+      final HttpPost post = new HttpPost("http://sampleHostDoesNotExistsBlahDlahClahBlah.com" + endpoint);
+      post.setEntity(new StringEntity("Dummy request body."));
+      try(CloseableHttpResponse httpResponse = httpClient.execute(post))
+      {
+        return IOUtils.toString(httpResponse.getEntity().getContent(), "UTF-8");
+      }
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
+  protected int postAndGetResponseStatus(final int port, final String endpoint)
+  {
+    try(CloseableHttpClient httpClient = getHttpClient(port))
+    {
+      final HttpPost post = new HttpPost("http://sampleHostDoesNotExistsBlahDlahClahBlah.com" + endpoint);
+      post.setEntity(new StringEntity("Dummy request body."));
+      try(CloseableHttpResponse httpResponse = httpClient.execute(post))
+      {
+        return httpResponse.getStatusLine().getStatusCode();
       }
     }
     catch (IOException e)

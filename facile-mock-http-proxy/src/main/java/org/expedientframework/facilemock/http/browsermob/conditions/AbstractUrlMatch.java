@@ -15,8 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-import org.expedientframework.facilemock.core.Condition;
 import org.expedientframework.facilemock.http.browsermob.HttpRequestContext;
+import org.expedientframework.facilemock.http.conditions.AbstractHttpCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,15 +24,23 @@ import org.slf4j.LoggerFactory;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public abstract class AbstractUrlMatch implements Condition<HttpRequestContext>
+public abstract class AbstractUrlMatch extends AbstractHttpCondition<HttpRequestContext>
 {
   protected AbstractUrlMatch(final Pattern pattern)
   {
+    super();
+    
     this.pattern = pattern;
   }
   
   @Override
-  public boolean evaluate(final HttpRequestContext request)
+  protected String getHttpMethodForRequest(final HttpRequestContext request)
+  {
+    return request.getRequest().getMethod().name();
+  }
+  
+  @Override
+  protected boolean doEvaluate(final HttpRequestContext request)
   {    
     try
     {

@@ -34,21 +34,28 @@ import net.lightbody.bmp.BrowserMobProxyServer;
  */
 public abstract class HttpProxyManagerFactory
 {
-  public static HttpProxyManager create(final TestScope executionScope)
+  public static HttpProxyManager createHttpProxy(final TestScope executionScope)
   {
     final BrowserMobProxy httpProxy = new BrowserMobProxyServer();
     
     httpProxy.start();
     
-    return create(httpProxy, true, executionScope);
+    return createHttpProxy(httpProxy, true, executionScope);
   }
   
-  public static HttpProxyManager create(final BrowserMobProxy httpProxy, final TestScope executionScope)
+  public static HttpProxyManager createHttpProxy(final BrowserMobProxy httpProxy, final TestScope executionScope)
   {
-    return create(httpProxy, false, executionScope);
+    return createHttpProxy(httpProxy, false, executionScope);
   }
 
-  private static HttpProxyManager create(final BrowserMobProxy httpProxy, final boolean ownsHttpProxy, final TestScope executionScope)
+  public static HttpMockContext createMockContext(final TestScope executionScope)
+  {
+    final HttpProxyManager proxyManager = createHttpProxy(executionScope);
+    
+    return new HttpMockContext(proxyManager, true);
+  }
+
+  private static HttpProxyManager createHttpProxy(final BrowserMobProxy httpProxy, final boolean ownsHttpProxy, final TestScope executionScope)
   {
     return (HttpProxyManager) Proxy.newProxyInstance(HttpProxyManagerFactory.class.getClassLoader(), 
                                                      new Class<?>[] {HttpProxyManager.class}, 
@@ -112,7 +119,7 @@ public abstract class HttpProxyManagerFactory
         }
           
         case "mockContext":
-          return new HttpMockContext((HttpProxyManager) proxy);
+          return new HttpMockContext((HttpProxyManager) proxy, false);
       }
 
       return null;

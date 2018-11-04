@@ -15,11 +15,6 @@ import java.io.Closeable;
 
 import org.expedientframework.facilemock.core.Condition;
 import org.expedientframework.facilemock.core.MockDefinitionDelegate;
-import org.expedientframework.facilemock.core.TestScope;
-import org.expedientframework.facilemock.http.browsermob.actions.Response;
-
-import static org.expedientframework.facilemock.http.browsermob.conditions.UrlMatches.*;
-
 import io.netty.handler.codec.http.HttpResponse;
 
 /**
@@ -28,11 +23,17 @@ import io.netty.handler.codec.http.HttpResponse;
  */
 public class HttpMockContext implements Closeable
 {
-  public HttpMockContext(final HttpProxyManager httpProxyManager)
+  HttpMockContext(final HttpProxyManager httpProxyManager, final boolean ownsHttpProxyManager)
   {
     this.httpProxyManager = httpProxyManager;
+    this.ownsHttpProxyManager = ownsHttpProxyManager;
   }
 
+  public HttpProxyManager getHttpProxyManager()
+  {
+    return this.httpProxyManager;
+  }
+  
   public MockDefinitionDelegate<HttpRequestContext, HttpResponse> when(final Condition<HttpRequestContext> condition)
   {
     return this.httpProxyManager.when(condition);
@@ -42,39 +43,14 @@ public class HttpMockContext implements Closeable
   public void close()
   {
     this.httpProxyManager.clear();
+    if(this.ownsHttpProxyManager)
+    {
+      this.httpProxyManager.close();
+    }
   }
   
-  public static UrlEquals urlEquals(final String urlToMatch)
-  {
-    return new UrlEquals(urlToMatch);
-  }
-  
-  public static UrlStartsWith urlStartsWith(final String urlToMatch)
-  {
-    return new UrlStartsWith(urlToMatch);
-  }
-
-  public static UrlEndsWith urlEndsWith(final String urlToMatch)
-  {
-    return new UrlEndsWith(urlToMatch);
-  }
-
-  public static Response respondWith(final Object responseBody)
-  {
-    return new Response(responseBody);
-  }
-  
-  public static TestScope integrationTest()
-  {
-    return TestScope.INTEGRATION_TEST;
-  }
-
-  public static TestScope unitTest()
-  {
-    return TestScope.UNIT_TEST;
-  }
-
   // Private members
   private final HttpProxyManager httpProxyManager;
+  private final boolean ownsHttpProxyManager;
 }
 

@@ -13,7 +13,7 @@ package org.expedientframework.facilemock.http.browsermob;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.expedientframework.facilemock.core.MockDefinitionDelegate.*;
-import static org.expedientframework.facilemock.http.browsermob.HttpMockContext.*;
+import static org.expedientframework.facilemock.http.browsermob.HttpMockHelpers.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlEquals_singleLevelPath_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -48,7 +48,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlEquals_singleLevelPathButInputHasPathInBetween_returnsBadGatewayOrNotFound()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -65,7 +65,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlEquals_twoLevelPaths_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -82,7 +82,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlEquals_singleAndMultipleLevelPaths_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -119,7 +119,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlStartsWith_singleLevelPath_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -140,7 +140,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlStartsWith_twoLevelPath_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -160,7 +160,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlEndsWith_singleLevelPath_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -181,7 +181,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlEndsWith_simpleWord_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
@@ -200,7 +200,7 @@ class UrlMatchConditionTest extends AbstractTest
   @Test
   void urlContains_singleLevelPath_returnsMockData()
   {
-    try(final HttpProxyManager proxy = HttpProxyManagerFactory.create(unitTest()))
+    try(final HttpProxyManager proxy = HttpProxyManagerFactory.createHttpProxy(unitTest()))
     {
       try(HttpMockContext mock = proxy.mockContext())
       {
