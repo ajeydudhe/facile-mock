@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * TODO: Update with a detailed description of the interface/class.
  *
  */
-public class UrlMatches extends AbstractUrlMatch
+public class UrlMatches extends AbstractBrowserMobCondition
 {
   public UrlMatches(final String urlToMatch)
   {

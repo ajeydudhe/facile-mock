@@ -11,6 +11,8 @@
 
 package org.expedientframework.facilemock.http.conditions;
 
+import java.net.URL;
+
 import org.expedientframework.facilemock.core.Condition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,8 @@ public abstract class AbstractHttpCondition<T> implements Condition<T>
   public boolean evaluate(T request)
   {
     final String requestHttpMethod = this.getHttpMethodForRequest(request);
+    LOG.info("Evaluating http request with http method [{}] and URL [{}].", requestHttpMethod, this.getHttpUrlForRequest(request));
+    
     if(! this.expectedHttpMethod.equalsIgnoreCase(requestHttpMethod))
     {
       LOG.info("Expected http method [{}] is not equal to current http method [{}].", this.expectedHttpMethod, requestHttpMethod);
@@ -50,6 +54,8 @@ public abstract class AbstractHttpCondition<T> implements Condition<T>
   }
   
   protected abstract String getHttpMethodForRequest(final T request);
+  protected abstract URL getHttpUrlForRequest(final T request);
+  
   protected abstract boolean doEvaluate(T request);
   
   // Protected members
