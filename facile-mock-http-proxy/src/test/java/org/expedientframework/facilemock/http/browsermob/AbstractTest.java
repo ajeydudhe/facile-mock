@@ -47,7 +47,9 @@ import org.slf4j.LoggerFactory;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * TODO: Update with a detailed description of the interface/class.
+ * Base class with helper methods for making http calls etc.
+ * 
+ * @author ajey_dudhe
  *
  */
 public abstract class AbstractTest

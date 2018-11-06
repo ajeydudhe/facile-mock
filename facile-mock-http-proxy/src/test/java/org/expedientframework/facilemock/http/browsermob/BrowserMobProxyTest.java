@@ -24,10 +24,12 @@ import org.junit.jupiter.api.Test;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * TODO: Update with a detailed description of the interface/class.
+ * Tests for verifying the basic mocking framework.
+ * 
+ * @author ajey_dudhe
  *
  */
-class BrowserMobProxyTest extends AbstractTest //TODO: Ajey - Name the tests as per conventions and make more readable !!!
+class BrowserMobProxyTest extends AbstractTest
 {
   @Test
   void mock_alwaysByDefault_returnsMockData()

@@ -19,7 +19,9 @@ import org.junit.jupiter.api.Test;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * TODO: Update with a detailed description of the interface/class.
+ * Tests for http method based condition mocking.
+ * 
+ * @author ajey_dudhe
  *
  */
 class HttpMethodTest extends AbstractTest

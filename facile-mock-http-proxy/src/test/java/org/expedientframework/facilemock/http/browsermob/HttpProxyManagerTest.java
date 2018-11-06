@@ -20,10 +20,12 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import net.lightbody.bmp.BrowserMobProxyServer;
 
 /**
- * TODO: Update with a detailed description of the interface/class.
+ * {@link HttpProxyManagerFactory} method tests.
+ * 
+ * @author ajey_dudhe
  *
  */
-class HttpProxyManagerTest extends AbstractTest //TODO: Ajey - Name the tests as per conventions and make more readable !!!
+class HttpProxyManagerTest extends AbstractTest
 {
   @Test
   void httpProxyManager_creatingProxy_returnsMockResponse()
