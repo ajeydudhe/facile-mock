@@ -58,11 +58,12 @@ public abstract class HttpMockHelpers
     return setHttpMethod(condition, "OPTIONS");
   }
 
+  /*
   public static AbstractHttpCondition<HttpRequestContext> connect(final AbstractHttpCondition<HttpRequestContext> condition)
   {
     //return setHttpMethod(condition, "CONNECT");
     throw new NotImplementedException("Currently not supported since there is no use case to mock the connect request.");
-  }
+  }*/
 
   public static AbstractHttpCondition<HttpRequestContext> trace(final AbstractHttpCondition<HttpRequestContext> condition)
   {

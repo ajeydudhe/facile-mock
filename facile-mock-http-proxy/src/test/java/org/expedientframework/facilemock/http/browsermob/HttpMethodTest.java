@@ -72,7 +72,8 @@ class HttpMethodTest extends AbstractTest
     }
   }
 
-  //@Test
+  /*
+  @Test
   void connect_returnsHttpCode()
   {
     try(HttpMockContext mock = HttpProxyManagerFactory.createMockContext(unitTest()))
@@ -85,6 +86,6 @@ class HttpMethodTest extends AbstractTest
       
       assertThat(getHttpStatusWhileFetchingUsers(port)).as("Response").isEqualTo(HttpResponseStatus.EXPECTATION_FAILED);
     }
-  }
+  }*/
 }
 
