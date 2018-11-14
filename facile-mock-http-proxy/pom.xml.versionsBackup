@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.expedientframework.facilemock</groupId>
 		<artifactId>facile-mock</artifactId>
-		<version>1.0.0-M1</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>facile-mock-http-proxy</artifactId>
 
