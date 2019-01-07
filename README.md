@@ -16,10 +16,33 @@ Add the maven dependency to your pom.xml as follows:
 ```
 ## Usage
 ```java
-    try(HttpMockContext mock = HttpProxyManagerFactory.createMockContext(unitTest()))
+try(HttpMockContext mock = HttpProxyManagerFactory.createMockContext(unitTest()))
+{
+  final int port = mock.getHttpProxyManager().getPort();
+  mock.when(post(urlEquals("/dummy"))).then(respondWith("Hello from mock for post !!!"));
+  final response = postAndGetResponseBody(port, "/dummy");
+  assertThat(response).as("Response").isEqualTo("Hello from mock for post !!!");
+}
+```
+* _**HttpProxyManagerFactory.createMockContext()**_ creates the mocking context indicating that we are executing unit tests so that the mocking should be honoured. If you mark it as integration tests then no mocking will be done and the http calls will be made to live server as per the url.
+* _**mock.when()**_ takes the mocking condition which in this case says that for _**post**_ request with url equal to _**/dummy**_ we should return a mock response.
+* _**then()**_ specifies that we should respond with a dummy string value.
+* The _**postAndGetResponseBody()**_ method makes a http call with the given _**port**_ on which the http proxy is listening as follows:
+```java
+public int postAndGetResponseStatus(final int port, final String endpoint)
+{
+    try(CloseableHttpClient httpClient = HttpClientBuilder.create().setProxy(new HttpHost("localhost", port)))
     {
-      final int port = mock.getHttpProxyManager().getPort();
-      mock.when(post(urlEquals("/dummy"))).then(respondWith("Hello from mock for post !!!"));
-      assertThat(postAndGetResponseBody(port, "/dummy")).as("Response").isEqualTo("Hello from mock for post !!!");
+      final HttpPost post = new HttpPost("http://sampleHostDoesNotExistsBlah.com" + endpoint);
+      post.setEntity(new StringEntity("Dummy request body."));
+      try(CloseableHttpResponse httpResponse = httpClient.execute(post))
+      {
+        return httpResponse.getStatusLine().getStatusCode();
+      }
     }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+}
 ```
