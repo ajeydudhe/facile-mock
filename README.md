@@ -3,7 +3,7 @@
 
 **WORK IN PROGRESS** Work in progress.
 
-**facile-mock** is a simple mocking library for [**BrowserMobProxy**](https://github.com/lightbody/browsermob-proxy) to allow mocking the http requests in the tests. It allows running a given test as both unit test and integration test where in case of integration test the mocking will be skipped.
+**facile-mock** is a simple mocking library for [**BrowserMobProxy**](https://github.com/lightbody/browsermob-proxy) to allow mocking the http requests in the tests. It allows running a given test with given scope as unit test or integration test. In case of the scope as integration test the mocking will be skipped altogether and run against actual server.
 
 ## Adding the library reference
 Add the maven dependency to your pom.xml as follows:
