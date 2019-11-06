@@ -24,7 +24,7 @@ try(HttpMockContext mock = HttpProxyManagerFactory.createMockContext(unitTest())
   assertThat(response).as("Response").isEqualTo("Hello from mock for post !!!");
 }
 ```
-* _**HttpProxyManagerFactory.createMockContext()**_ creates the mocking context indicating that we are executing unit tests so that the mocking should be honoured. If you mark it as integration tests then no mocking will be done and the http calls will be made to live server as per the url.
+* _**HttpProxyManagerFactory.createMockContext()**_ creates the mocking context indicating that we are executing unit tests so that the mocking should be honoured. If you mark it as integration tests then no mocking will be done and the http calls will be made to live server as per the url. So you can run same tests as unit tests with mocking and integration tests without mocking. You just need to passing in proper parameter to _**createMockContext()**_ at runtime.
 * _**mock.when()**_ takes the mocking condition which in this case says that for _**post**_ request with url equal to _**/dummy**_ we should return a mock response.
 * _**then()**_ specifies that we should respond with a dummy string value.
 * The _**postAndGetResponseBody()**_ method makes a http call with the given _**port**_ on which the http proxy is listening as follows:
